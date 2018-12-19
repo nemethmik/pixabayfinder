@@ -1,14 +1,34 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import logo from './logo.svg';
 import Button from "@material-ui/core/Button"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
-class App extends Component {
+import {TPixabayImage,IPixabayAPI} from "./pixabayapi"
+type TPixabayFinderState = {
+  images: TPixabayImage[],
+  errorMessage: string,
+  //more fields come here leter
+}
+class App extends React.Component<IPixabayAPI,TPixabayFinderState> {
+  public state: TPixabayFinderState = {
+    images:[],
+    errorMessage: ""
+  }
+  async componentDidMount(){
+    try {
+      const images = await this.props.queryImagesFromPixabay("dogs",15) 
+      this.setState({images,errorMessage:""})
+    } catch(reason) {
+      console
+      this.setState({images:[],errorMessage: "Error:" + reason})
+    }
+  }
   render() {
+    console.log("Images",this.state.images)
     return (
       <>
-      <AppBar position="sticky">
+      <AppBar position="sticky"> 
         <Toolbar>
           <img src={logo} className="App-logo" alt="logo" width="56px"/>
           <Typography variant="h6" noWrap color="inherit">Pixabay Image Finder</Typography>
@@ -19,45 +39,11 @@ class App extends Component {
           </a>
         </Toolbar>
       </AppBar>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
-      <div>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit possimus fuga exercitationem illo, quam sunt sint veniam enim nemo molestias, minus consequatur odit, a quo aspernatur! Blanditiis reiciendis doloribus quas.
-      </div>
+      {!this.state.images.length && <div>Loading Images...</div>}
+      {this.state.errorMessage && <div>{this.state.errorMessage}</div>}
+      {this.state.images.map(i=>{
+        return (<div key={i.id}>{i.tags} by {i.user} <img src={i.largeImageURL} width="100%"/></div> )
+      }) }
       </>
     )
   }
