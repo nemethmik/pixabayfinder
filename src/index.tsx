@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {TPixabayImage,IPixabayAPI} from "./pixabayapi"
 class PixabayService implements IPixabayAPI {
-  private static readonly pixabayAPI = "https://pixabay.com/apiX/?key=126338-8e2f836ed7b71bbd3fd183c37"
+  private static readonly pixabayAPI = "https://pixabay.com/api/?key=126338-8e2f836ed7b71bbd3fd183c37"
   public async queryImagesFromPixabay(searchText:string,numberofImagesToGet:number): Promise<TPixabayImage[]> {
     if(searchText) {
       const q = PixabayService.pixabayAPI + "&image_type=photo" + "&per_page=" + numberofImagesToGet + "&q=" + encodeURIComponent(searchText)
