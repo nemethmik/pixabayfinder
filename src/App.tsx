@@ -10,14 +10,17 @@ type TPixabayFinderState = {
   errorMessage: string,
   //more fields come here leter
 }
-class App extends React.Component<IPixabayAPI,TPixabayFinderState> {
+type TPixabaFinderProps = {
+  pixabayApi: IPixabayAPI,
+}
+class App extends React.Component<TPixabaFinderProps,TPixabayFinderState> {
   public state: TPixabayFinderState = {
     images:[],
     errorMessage: ""
   }
   async componentDidMount(){
     try {
-      const images = await this.props.queryImagesFromPixabay("dogs",15) 
+      const images = await this.props.pixabayApi.queryImagesFromPixabay("dogs",15) 
       this.setState({images,errorMessage:""})
     } catch(reason) {
       console

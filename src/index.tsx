@@ -21,8 +21,8 @@ class PixabayService implements IPixabayAPI {
   }
 
 }
-const pixabayService = new PixabayService() //This is the factory operation
-ReactDOM.render(<App queryImagesFromPixabay={pixabayService.queryImagesFromPixabay}/>, document.getElementById('root'));
+const pixabayService:IPixabayAPI = new PixabayService() //This is the factory operation
+ReactDOM.render(<App pixabayApi={pixabayService}/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
